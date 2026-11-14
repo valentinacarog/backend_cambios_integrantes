@@ -1,0 +1,29 @@
+/* NUEVO: ESTILOS DEL APARTADO "GRAFICAS" (SE PUEDEN AJUSTAR A LOS COLORES DEL FRONTEND) */
+.gp-grupo { border-top: 1px solid rgba(148, 163, 184, .35); margin-top: 8px; padding-top: 8px; }
+.gp-titulo {
+  width: 100%; display: flex; justify-content: space-between; align-items: center;
+  background: none; border: 0; padding: 10px 12px; border-radius: 8px;
+  font: inherit; font-weight: 600; color: inherit; cursor: pointer; text-align: left;
+}
+.gp-titulo:hover, .gp-item:hover { background: rgba(99, 102, 241, .12); }
+.gp-sub { list-style: none; margin: 4px 0 0; padding: 0 0 0 12px; }
+.gp-item {
+  width: 100%; background: none; border: 0; padding: 8px 12px; border-radius: 8px;
+  font: inherit; color: inherit; cursor: pointer; text-align: left;
+}
+.gp-activo { background: rgba(99, 102, 241, .2); font-weight: 600; }
+.gp-h2 { margin: 0 0 16px; font-size: 1.4rem; }
+.gp-tarjeta {
+  background: #fff; border: 1px solid #e2e8f0; border-radius: 12px;
+  padding: 16px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(15, 23, 42, .06);
+}
+.gp-cabecera { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 8px; }
+.gp-h3 { margin: 0; font-size: 1.05rem; color: #1e293b; }
+.gp-actualizar {
+  background: #6366f1; color: #fff; border: 0; border-radius: 8px;
+  padding: 6px 14px; font: inherit; font-size: .85rem; cursor: pointer;
+}
+.gp-actualizar:hover { background: #4f46e5; }
+.gp-img { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+.gp-estado { margin: 8px 0; color: #64748b; font-size: .9rem; }
+.gp-error { color: #dc2626; }

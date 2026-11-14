@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<!-- NUEVO: PAGINA DEL BACKEND PARA VER LAS GRAFICAS. SE ABRE EN http://localhost:3000/graficas.html -->
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gráficas · CESDE Gamified Challenges</title>
+  <link rel="stylesheet" href="/graficas/graficas-panel.css">
+  <style>
+    /* NUEVO: ESTILOS SOLO DE ESTA PAGINA DE PRUEBA */
+    body { margin: 0; font-family: system-ui, sans-serif; background: #f1f5f9; color: #1e293b; }
+    .layout { display: flex; min-height: 100vh; }
+    .lateral { width: 260px; background: #fff; border-right: 1px solid #e2e8f0; padding: 20px 14px; display: flex; flex-direction: column; }
+    .lateral h1 { font-size: 1rem; margin: 0 0 16px; }
+    .espacio { flex: 1; }
+    .contenido { flex: 1; padding: 28px; }
+    .login { max-width: 360px; margin: 12vh auto; background: #fff; padding: 28px; border-radius: 12px; box-shadow: 0 4px 16px rgba(15,23,42,.08); }
+    .login h1 { margin-top: 0; font-size: 1.2rem; }
+    .login input { width: 100%; box-sizing: border-box; padding: 10px; margin: 6px 0 14px; border: 1px solid #cbd5e1; border-radius: 8px; font: inherit; }
+    .login button, .salir { background: #6366f1; color: #fff; border: 0; border-radius: 8px; padding: 10px 16px; font: inherit; cursor: pointer; }
+    .salir { background: #64748b; margin-top: 12px; }
+    .msg { color: #dc2626; font-size: .9rem; min-height: 1.2em; }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+  <!-- NUEVO: INICIO DE SESION CON LAS CUENTAS DEL BACKEND (ADMIN O ESTUDIANTE) -->
+  <form class="login" id="login">
+    <h1>Gráficas · Iniciar sesión</h1>
+    <label>Correo<input type="email" id="email" required autocomplete="username"></label>
+    <label>Contraseña<input type="password" id="password" required autocomplete="current-password"></label>
+    <p class="msg" id="msg"></p>
+    <button type="submit">Entrar</button>
+  </form>
+
+  <!-- NUEVO: PANEL CON EL MENU "GRAFICAS" ABAJO DEL TODO EN LA BARRA LATERAL -->
+  <div class="layout" id="app" hidden>
+    <aside class="lateral">
+      <h1 id="saludo"></h1>
+      <div class="espacio"></div>
+      <div id="menu-graficas"></div>
+      <button class="salir" id="salir" type="button">Cerrar sesión</button>
+    </aside>
+    <main class="contenido" id="vista-graficas">
+      <p>Abre <strong>Gráficas</strong> en el menú de la izquierda y elige un apartado.</p>
+    </main>
+  </div>
+
+  <script src="/graficas/graficas-panel.js"></script>
+  <script>
+    // NUEVO: LA PAGINA SE SIRVE DESDE EL MISMO BACKEND, POR ESO LA URL BASE ES EL ORIGEN ACTUAL
+    var API = window.location.origin;
+    var token = null;
+
+    document.getElementById('login').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var msg = document.getElementById('msg');
+      msg.textContent = '';
+      fetch(API + '/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: document.getElementById('email').value,
+          password: document.getElementById('password').value
+        })
+      }).then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+        .then(function (res) {
+          if (!res.ok) { msg.textContent = res.d.message || 'No se pudo iniciar sesión'; return; }
+          token = res.d.token;
+          document.getElementById('login').hidden = true;
+          document.getElementById('app').hidden = false;
+          document.getElementById('saludo').textContent = res.d.user.nombre + ' · ' + res.d.user.rol;
+          // NUEVO: MONTA EL APARTADO "GRAFICAS" SEGUN EL ROL (ADMIN O USUARIO)
+          GraficasPanel.montar({
+            menu: document.getElementById('menu-graficas'),
+            vista: document.getElementById('vista-graficas'),
+            apiBase: API,
+            rol: res.d.user.rol,
+            obtenerToken: function () { return token; }
+          });
+        })
+        .catch(function () { msg.textContent = 'No se pudo conectar con el backend'; });
+    });
+
+    document.getElementById('salir').addEventListener('click', function () {
+      token = null;
+      window.location.reload();
+    });
+  </script>
+</body>
+</html>

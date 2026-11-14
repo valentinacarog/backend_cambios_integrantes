@@ -1,0 +1,4 @@
+# NUEVO: NO SUBIR EL AMBIENTE VIRTUAL NI ARCHIVOS TEMPORALES
+.venv/
+__pycache__/
+*.pyc
