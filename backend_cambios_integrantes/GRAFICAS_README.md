@@ -1,5 +1,38 @@
 # NUEVO: APARTADO "GRAFICAS" (MATPLOTLIB + BACKEND SPRING BOOT)
 
+backend_cambios_integrantes/
+├── pom.xml
+├── Dockerfile
+├── README.md
+├── GRAFICAS_README.md                      (NUEVO) guía del apartado
+├── database/schema.sql
+├── graficas/                               (NUEVO) servicio Python
+│   ├── app.py                              servidor Flask
+│   ├── charts.py                           funciones matplotlib
+│   ├── samples.py                          datos de ejemplo
+│   ├── requirements.txt                    flask, matplotlib, gunicorn
+│   ├── setup_venv.sh / setup_venv.bat      crean el ambiente virtual
+│   ├── run.sh / run.bat                    inician el servicio
+│   ├── Dockerfile
+│   └── .gitignore
+└── src/main/
+    ├── java/com/cesde/proyectointegrador/
+    │   ├── config/SecurityConfig.java      (sin cambios)
+    │   └── modules/
+    │       ├── auth, usuarios, retos, empresas,
+    │       │   categorias, registros, health   (sin cambios)
+    │       └── graficas/                   (NUEVO)
+    │           ├── controller/GraficaController.java
+    │           ├── service/GraficaService.java
+    │           └── config/GraficasSecurityConfig.java
+    └── resources/
+        ├── application.properties          (sin cambios)
+        └── static/                         (NUEVO)
+            ├── graficas.html               página para ver las gráficas
+            └── graficas/
+                ├── graficas-panel.js       menú desplegable y carga de imágenes
+                └── graficas-panel.css      estilos
+
 ## Como funciona
 
 ```
